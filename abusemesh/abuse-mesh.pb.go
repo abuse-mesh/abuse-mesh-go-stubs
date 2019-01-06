@@ -18,32 +18,32 @@ var _ = fmt.Errorf
 var _ = math.Inf
 
 // The type of update to a table
-type TableUpdateType int32
+type TableEventType int32
 
 const (
 	// A new entity is added to the table
-	TableUpdateType_TABLE_UPDATE_NEW TableUpdateType = 0
+	TableEventType_TABLE_UPDATE_NEW TableEventType = 0
 	// A existing entity was changed in the table
-	TableUpdateType_TABLE_UPDATE_EDIT TableUpdateType = 1
+	TableEventType_TABLE_UPDATE_EDIT TableEventType = 1
 	// A entity was deleted from the table
-	TableUpdateType_TABLE_UPDATE_DELETE TableUpdateType = 2
+	TableEventType_TABLE_UPDATE_DELETE TableEventType = 2
 )
 
-var TableUpdateType_name = map[int32]string{
+var TableEventType_name = map[int32]string{
 	0: "TABLE_UPDATE_NEW",
 	1: "TABLE_UPDATE_EDIT",
 	2: "TABLE_UPDATE_DELETE",
 }
-var TableUpdateType_value = map[string]int32{
+var TableEventType_value = map[string]int32{
 	"TABLE_UPDATE_NEW":    0,
 	"TABLE_UPDATE_EDIT":   1,
 	"TABLE_UPDATE_DELETE": 2,
 }
 
-func (x TableUpdateType) String() string {
-	return proto.EnumName(TableUpdateType_name, int32(x))
+func (x TableEventType) String() string {
+	return proto.EnumName(TableEventType_name, int32(x))
 }
-func (TableUpdateType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (TableEventType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
 type GetNodeRequest struct {
 }
@@ -53,13 +53,29 @@ func (m *GetNodeRequest) String() string            { return proto.CompactTextSt
 func (*GetNodeRequest) ProtoMessage()               {}
 func (*GetNodeRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
+type OfferSignatureRequest struct {
+	Signature *PGPSignature `protobuf:"bytes,1,opt,name=signature" json:"signature,omitempty"`
+}
+
+func (m *OfferSignatureRequest) Reset()                    { *m = OfferSignatureRequest{} }
+func (m *OfferSignatureRequest) String() string            { return proto.CompactTextString(m) }
+func (*OfferSignatureRequest) ProtoMessage()               {}
+func (*OfferSignatureRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
+
+func (m *OfferSignatureRequest) GetSignature() *PGPSignature {
+	if m != nil {
+		return m.Signature
+	}
+	return nil
+}
+
 type GetNodeTableRequest struct {
 }
 
 func (m *GetNodeTableRequest) Reset()                    { *m = GetNodeTableRequest{} }
 func (m *GetNodeTableRequest) String() string            { return proto.CompactTextString(m) }
 func (*GetNodeTableRequest) ProtoMessage()               {}
-func (*GetNodeTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
+func (*GetNodeTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{2} }
 
 type GetNeighborTableRequest struct {
 	// If true the server should return the global neighbor table
@@ -70,7 +86,7 @@ type GetNeighborTableRequest struct {
 func (m *GetNeighborTableRequest) Reset()                    { *m = GetNeighborTableRequest{} }
 func (m *GetNeighborTableRequest) String() string            { return proto.CompactTextString(m) }
 func (*GetNeighborTableRequest) ProtoMessage()               {}
-func (*GetNeighborTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{2} }
+func (*GetNeighborTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3} }
 
 func (m *GetNeighborTableRequest) GetGlobal() bool {
 	if m != nil {
@@ -85,7 +101,17 @@ type GetReportTableRequest struct {
 func (m *GetReportTableRequest) Reset()                    { *m = GetReportTableRequest{} }
 func (m *GetReportTableRequest) String() string            { return proto.CompactTextString(m) }
 func (*GetReportTableRequest) ProtoMessage()               {}
-func (*GetReportTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3} }
+func (*GetReportTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{4} }
+
+type GetReportConfirmationTableRequest struct {
+}
+
+func (m *GetReportConfirmationTableRequest) Reset()         { *m = GetReportConfirmationTableRequest{} }
+func (m *GetReportConfirmationTableRequest) String() string { return proto.CompactTextString(m) }
+func (*GetReportConfirmationTableRequest) ProtoMessage()    {}
+func (*GetReportConfirmationTableRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor1, []int{5}
+}
 
 type GetDelistRequestTableRequest struct {
 }
@@ -93,7 +119,7 @@ type GetDelistRequestTableRequest struct {
 func (m *GetDelistRequestTableRequest) Reset()                    { *m = GetDelistRequestTableRequest{} }
 func (m *GetDelistRequestTableRequest) String() string            { return proto.CompactTextString(m) }
 func (*GetDelistRequestTableRequest) ProtoMessage()               {}
-func (*GetDelistRequestTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{4} }
+func (*GetDelistRequestTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{6} }
 
 type GetDelistAcceptanceTableRequest struct {
 }
@@ -101,15 +127,23 @@ type GetDelistAcceptanceTableRequest struct {
 func (m *GetDelistAcceptanceTableRequest) Reset()                    { *m = GetDelistAcceptanceTableRequest{} }
 func (m *GetDelistAcceptanceTableRequest) String() string            { return proto.CompactTextString(m) }
 func (*GetDelistAcceptanceTableRequest) ProtoMessage()               {}
-func (*GetDelistAcceptanceTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{5} }
+func (*GetDelistAcceptanceTableRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{7} }
 
-type TableUpdateStreamRequest struct {
+type TableEventStreamRequest struct {
 }
 
-func (m *TableUpdateStreamRequest) Reset()                    { *m = TableUpdateStreamRequest{} }
-func (m *TableUpdateStreamRequest) String() string            { return proto.CompactTextString(m) }
-func (*TableUpdateStreamRequest) ProtoMessage()               {}
-func (*TableUpdateStreamRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{6} }
+func (m *TableEventStreamRequest) Reset()                    { *m = TableEventStreamRequest{} }
+func (m *TableEventStreamRequest) String() string            { return proto.CompactTextString(m) }
+func (*TableEventStreamRequest) ProtoMessage()               {}
+func (*TableEventStreamRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{8} }
+
+type GetHistoricTableEventsRequest struct {
+}
+
+func (m *GetHistoricTableEventsRequest) Reset()                    { *m = GetHistoricTableEventsRequest{} }
+func (m *GetHistoricTableEventsRequest) String() string            { return proto.CompactTextString(m) }
+func (*GetHistoricTableEventsRequest) ProtoMessage()               {}
+func (*GetHistoricTableEventsRequest) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{9} }
 
 type GetNodeTableResponse struct {
 	Nodes []*Node `protobuf:"bytes,1,rep,name=nodes" json:"nodes,omitempty"`
@@ -118,7 +152,7 @@ type GetNodeTableResponse struct {
 func (m *GetNodeTableResponse) Reset()                    { *m = GetNodeTableResponse{} }
 func (m *GetNodeTableResponse) String() string            { return proto.CompactTextString(m) }
 func (*GetNodeTableResponse) ProtoMessage()               {}
-func (*GetNodeTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{7} }
+func (*GetNodeTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{10} }
 
 func (m *GetNodeTableResponse) GetNodes() []*Node {
 	if m != nil {
@@ -127,6 +161,14 @@ func (m *GetNodeTableResponse) GetNodes() []*Node {
 	return nil
 }
 
+type OfferSignatureResponse struct {
+}
+
+func (m *OfferSignatureResponse) Reset()                    { *m = OfferSignatureResponse{} }
+func (m *OfferSignatureResponse) String() string            { return proto.CompactTextString(m) }
+func (*OfferSignatureResponse) ProtoMessage()               {}
+func (*OfferSignatureResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{11} }
+
 type GetNeighborTableResponse struct {
 	Neighbors []*Neighbor `protobuf:"bytes,1,rep,name=neighbors" json:"neighbors,omitempty"`
 }
@@ -134,7 +176,7 @@ type GetNeighborTableResponse struct {
 func (m *GetNeighborTableResponse) Reset()                    { *m = GetNeighborTableResponse{} }
 func (m *GetNeighborTableResponse) String() string            { return proto.CompactTextString(m) }
 func (*GetNeighborTableResponse) ProtoMessage()               {}
-func (*GetNeighborTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{8} }
+func (*GetNeighborTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{12} }
 
 func (m *GetNeighborTableResponse) GetNeighbors() []*Neighbor {
 	if m != nil {
@@ -150,11 +192,29 @@ type GetReportTableResponse struct {
 func (m *GetReportTableResponse) Reset()                    { *m = GetReportTableResponse{} }
 func (m *GetReportTableResponse) String() string            { return proto.CompactTextString(m) }
 func (*GetReportTableResponse) ProtoMessage()               {}
-func (*GetReportTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{9} }
+func (*GetReportTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{13} }
 
 func (m *GetReportTableResponse) GetReports() []*Report {
 	if m != nil {
 		return m.Reports
+	}
+	return nil
+}
+
+type GetReportConfirmationTableResponse struct {
+	ReportConfirmations []*ReportConfirmation `protobuf:"bytes,1,rep,name=report_confirmations,json=reportConfirmations" json:"report_confirmations,omitempty"`
+}
+
+func (m *GetReportConfirmationTableResponse) Reset()         { *m = GetReportConfirmationTableResponse{} }
+func (m *GetReportConfirmationTableResponse) String() string { return proto.CompactTextString(m) }
+func (*GetReportConfirmationTableResponse) ProtoMessage()    {}
+func (*GetReportConfirmationTableResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor1, []int{14}
+}
+
+func (m *GetReportConfirmationTableResponse) GetReportConfirmations() []*ReportConfirmation {
+	if m != nil {
+		return m.ReportConfirmations
 	}
 	return nil
 }
@@ -166,7 +226,7 @@ type GetDelistRequestTableResponse struct {
 func (m *GetDelistRequestTableResponse) Reset()                    { *m = GetDelistRequestTableResponse{} }
 func (m *GetDelistRequestTableResponse) String() string            { return proto.CompactTextString(m) }
 func (*GetDelistRequestTableResponse) ProtoMessage()               {}
-func (*GetDelistRequestTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{10} }
+func (*GetDelistRequestTableResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{15} }
 
 func (m *GetDelistRequestTableResponse) GetDelistRequests() []*DelistRequest {
 	if m != nil {
@@ -183,7 +243,7 @@ func (m *GetDelistAcceptanceTableResponse) Reset()         { *m = GetDelistAccep
 func (m *GetDelistAcceptanceTableResponse) String() string { return proto.CompactTextString(m) }
 func (*GetDelistAcceptanceTableResponse) ProtoMessage()    {}
 func (*GetDelistAcceptanceTableResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{11}
+	return fileDescriptor1, []int{16}
 }
 
 func (m *GetDelistAcceptanceTableResponse) GetDelistAcceptance() []*DelistAcceptance {
@@ -193,219 +253,294 @@ func (m *GetDelistAcceptanceTableResponse) GetDelistAcceptance() []*DelistAccept
 	return nil
 }
 
-type TableUpdate struct {
-	UpdateType TableUpdateType `protobuf:"varint,1,opt,name=update_type,json=updateType,enum=abusemesh.TableUpdateType" json:"update_type,omitempty"`
+type GetHistoricTableEventsResponse struct {
+	Events []*TableEvent `protobuf:"bytes,1,rep,name=events" json:"events,omitempty"`
+}
+
+func (m *GetHistoricTableEventsResponse) Reset()                    { *m = GetHistoricTableEventsResponse{} }
+func (m *GetHistoricTableEventsResponse) String() string            { return proto.CompactTextString(m) }
+func (*GetHistoricTableEventsResponse) ProtoMessage()               {}
+func (*GetHistoricTableEventsResponse) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{17} }
+
+func (m *GetHistoricTableEventsResponse) GetEvents() []*TableEvent {
+	if m != nil {
+		return m.Events
+	}
+	return nil
+}
+
+type TableEvent struct {
+	// The unique id of this event
+	EventId *UUID `protobuf:"bytes,1,opt,name=event_id,json=eventId" json:"event_id,omitempty"`
+	// The id of the event before this one regarding the same entity
+	// Is only set when `update_type` is EDIT or DELETE
+	PreviousEvent *UUID `protobuf:"bytes,2,opt,name=previous_event,json=previousEvent" json:"previous_event,omitempty"`
+	// The signature of `uuid` and `previous_event` signed with the same key as the entity
+	EventSignature *PGPSignature  `protobuf:"bytes,3,opt,name=event_signature,json=eventSignature" json:"event_signature,omitempty"`
+	UpdateType     TableEventType `protobuf:"varint,4,opt,name=update_type,json=updateType,enum=abusemesh.TableEventType" json:"update_type,omitempty"`
 	// Types that are valid to be assigned to TableEntity:
-	//	*TableUpdate_Node
-	//	*TableUpdate_Neighbor
-	//	*TableUpdate_Report
-	//	*TableUpdate_DelistRequests
-	//	*TableUpdate_DelistAcceptance
-	TableEntity isTableUpdate_TableEntity `protobuf_oneof:"table_entity"`
+	//	*TableEvent_Node
+	//	*TableEvent_Neighbor
+	//	*TableEvent_Report
+	//	*TableEvent_ReportConfirmation
+	//	*TableEvent_DelistRequests
+	//	*TableEvent_DelistAcceptance
+	TableEntity isTableEvent_TableEntity `protobuf_oneof:"table_entity"`
 }
 
-func (m *TableUpdate) Reset()                    { *m = TableUpdate{} }
-func (m *TableUpdate) String() string            { return proto.CompactTextString(m) }
-func (*TableUpdate) ProtoMessage()               {}
-func (*TableUpdate) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{12} }
+func (m *TableEvent) Reset()                    { *m = TableEvent{} }
+func (m *TableEvent) String() string            { return proto.CompactTextString(m) }
+func (*TableEvent) ProtoMessage()               {}
+func (*TableEvent) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{18} }
 
-type isTableUpdate_TableEntity interface {
-	isTableUpdate_TableEntity()
-}
-
-type TableUpdate_Node struct {
-	Node *Node `protobuf:"bytes,2,opt,name=node,oneof"`
-}
-type TableUpdate_Neighbor struct {
-	Neighbor *Neighbor `protobuf:"bytes,3,opt,name=neighbor,oneof"`
-}
-type TableUpdate_Report struct {
-	Report *Report `protobuf:"bytes,4,opt,name=report,oneof"`
-}
-type TableUpdate_DelistRequests struct {
-	DelistRequests *DelistRequest `protobuf:"bytes,5,opt,name=delist_requests,json=delistRequests,oneof"`
-}
-type TableUpdate_DelistAcceptance struct {
-	DelistAcceptance *DelistAcceptance `protobuf:"bytes,6,opt,name=delist_acceptance,json=delistAcceptance,oneof"`
+type isTableEvent_TableEntity interface {
+	isTableEvent_TableEntity()
 }
 
-func (*TableUpdate_Node) isTableUpdate_TableEntity()             {}
-func (*TableUpdate_Neighbor) isTableUpdate_TableEntity()         {}
-func (*TableUpdate_Report) isTableUpdate_TableEntity()           {}
-func (*TableUpdate_DelistRequests) isTableUpdate_TableEntity()   {}
-func (*TableUpdate_DelistAcceptance) isTableUpdate_TableEntity() {}
+type TableEvent_Node struct {
+	Node *Node `protobuf:"bytes,5,opt,name=node,oneof"`
+}
+type TableEvent_Neighbor struct {
+	Neighbor *Neighbor `protobuf:"bytes,6,opt,name=neighbor,oneof"`
+}
+type TableEvent_Report struct {
+	Report *Report `protobuf:"bytes,7,opt,name=report,oneof"`
+}
+type TableEvent_ReportConfirmation struct {
+	ReportConfirmation *ReportConfirmation `protobuf:"bytes,8,opt,name=report_confirmation,json=reportConfirmation,oneof"`
+}
+type TableEvent_DelistRequests struct {
+	DelistRequests *DelistRequest `protobuf:"bytes,9,opt,name=delist_requests,json=delistRequests,oneof"`
+}
+type TableEvent_DelistAcceptance struct {
+	DelistAcceptance *DelistAcceptance `protobuf:"bytes,10,opt,name=delist_acceptance,json=delistAcceptance,oneof"`
+}
 
-func (m *TableUpdate) GetTableEntity() isTableUpdate_TableEntity {
+func (*TableEvent_Node) isTableEvent_TableEntity()               {}
+func (*TableEvent_Neighbor) isTableEvent_TableEntity()           {}
+func (*TableEvent_Report) isTableEvent_TableEntity()             {}
+func (*TableEvent_ReportConfirmation) isTableEvent_TableEntity() {}
+func (*TableEvent_DelistRequests) isTableEvent_TableEntity()     {}
+func (*TableEvent_DelistAcceptance) isTableEvent_TableEntity()   {}
+
+func (m *TableEvent) GetTableEntity() isTableEvent_TableEntity {
 	if m != nil {
 		return m.TableEntity
 	}
 	return nil
 }
 
-func (m *TableUpdate) GetUpdateType() TableUpdateType {
+func (m *TableEvent) GetEventId() *UUID {
+	if m != nil {
+		return m.EventId
+	}
+	return nil
+}
+
+func (m *TableEvent) GetPreviousEvent() *UUID {
+	if m != nil {
+		return m.PreviousEvent
+	}
+	return nil
+}
+
+func (m *TableEvent) GetEventSignature() *PGPSignature {
+	if m != nil {
+		return m.EventSignature
+	}
+	return nil
+}
+
+func (m *TableEvent) GetUpdateType() TableEventType {
 	if m != nil {
 		return m.UpdateType
 	}
-	return TableUpdateType_TABLE_UPDATE_NEW
+	return TableEventType_TABLE_UPDATE_NEW
 }
 
-func (m *TableUpdate) GetNode() *Node {
-	if x, ok := m.GetTableEntity().(*TableUpdate_Node); ok {
+func (m *TableEvent) GetNode() *Node {
+	if x, ok := m.GetTableEntity().(*TableEvent_Node); ok {
 		return x.Node
 	}
 	return nil
 }
 
-func (m *TableUpdate) GetNeighbor() *Neighbor {
-	if x, ok := m.GetTableEntity().(*TableUpdate_Neighbor); ok {
+func (m *TableEvent) GetNeighbor() *Neighbor {
+	if x, ok := m.GetTableEntity().(*TableEvent_Neighbor); ok {
 		return x.Neighbor
 	}
 	return nil
 }
 
-func (m *TableUpdate) GetReport() *Report {
-	if x, ok := m.GetTableEntity().(*TableUpdate_Report); ok {
+func (m *TableEvent) GetReport() *Report {
+	if x, ok := m.GetTableEntity().(*TableEvent_Report); ok {
 		return x.Report
 	}
 	return nil
 }
 
-func (m *TableUpdate) GetDelistRequests() *DelistRequest {
-	if x, ok := m.GetTableEntity().(*TableUpdate_DelistRequests); ok {
+func (m *TableEvent) GetReportConfirmation() *ReportConfirmation {
+	if x, ok := m.GetTableEntity().(*TableEvent_ReportConfirmation); ok {
+		return x.ReportConfirmation
+	}
+	return nil
+}
+
+func (m *TableEvent) GetDelistRequests() *DelistRequest {
+	if x, ok := m.GetTableEntity().(*TableEvent_DelistRequests); ok {
 		return x.DelistRequests
 	}
 	return nil
 }
 
-func (m *TableUpdate) GetDelistAcceptance() *DelistAcceptance {
-	if x, ok := m.GetTableEntity().(*TableUpdate_DelistAcceptance); ok {
+func (m *TableEvent) GetDelistAcceptance() *DelistAcceptance {
+	if x, ok := m.GetTableEntity().(*TableEvent_DelistAcceptance); ok {
 		return x.DelistAcceptance
 	}
 	return nil
 }
 
 // XXX_OneofFuncs is for the internal use of the proto package.
-func (*TableUpdate) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _TableUpdate_OneofMarshaler, _TableUpdate_OneofUnmarshaler, _TableUpdate_OneofSizer, []interface{}{
-		(*TableUpdate_Node)(nil),
-		(*TableUpdate_Neighbor)(nil),
-		(*TableUpdate_Report)(nil),
-		(*TableUpdate_DelistRequests)(nil),
-		(*TableUpdate_DelistAcceptance)(nil),
+func (*TableEvent) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _TableEvent_OneofMarshaler, _TableEvent_OneofUnmarshaler, _TableEvent_OneofSizer, []interface{}{
+		(*TableEvent_Node)(nil),
+		(*TableEvent_Neighbor)(nil),
+		(*TableEvent_Report)(nil),
+		(*TableEvent_ReportConfirmation)(nil),
+		(*TableEvent_DelistRequests)(nil),
+		(*TableEvent_DelistAcceptance)(nil),
 	}
 }
 
-func _TableUpdate_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*TableUpdate)
+func _TableEvent_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*TableEvent)
 	// table_entity
 	switch x := m.TableEntity.(type) {
-	case *TableUpdate_Node:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
+	case *TableEvent_Node:
+		b.EncodeVarint(5<<3 | proto.WireBytes)
 		if err := b.EncodeMessage(x.Node); err != nil {
 			return err
 		}
-	case *TableUpdate_Neighbor:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
+	case *TableEvent_Neighbor:
+		b.EncodeVarint(6<<3 | proto.WireBytes)
 		if err := b.EncodeMessage(x.Neighbor); err != nil {
 			return err
 		}
-	case *TableUpdate_Report:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
+	case *TableEvent_Report:
+		b.EncodeVarint(7<<3 | proto.WireBytes)
 		if err := b.EncodeMessage(x.Report); err != nil {
 			return err
 		}
-	case *TableUpdate_DelistRequests:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
+	case *TableEvent_ReportConfirmation:
+		b.EncodeVarint(8<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.ReportConfirmation); err != nil {
+			return err
+		}
+	case *TableEvent_DelistRequests:
+		b.EncodeVarint(9<<3 | proto.WireBytes)
 		if err := b.EncodeMessage(x.DelistRequests); err != nil {
 			return err
 		}
-	case *TableUpdate_DelistAcceptance:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
+	case *TableEvent_DelistAcceptance:
+		b.EncodeVarint(10<<3 | proto.WireBytes)
 		if err := b.EncodeMessage(x.DelistAcceptance); err != nil {
 			return err
 		}
 	case nil:
 	default:
-		return fmt.Errorf("TableUpdate.TableEntity has unexpected type %T", x)
+		return fmt.Errorf("TableEvent.TableEntity has unexpected type %T", x)
 	}
 	return nil
 }
 
-func _TableUpdate_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*TableUpdate)
+func _TableEvent_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*TableEvent)
 	switch tag {
-	case 2: // table_entity.node
+	case 5: // table_entity.node
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
 		msg := new(Node)
 		err := b.DecodeMessage(msg)
-		m.TableEntity = &TableUpdate_Node{msg}
+		m.TableEntity = &TableEvent_Node{msg}
 		return true, err
-	case 3: // table_entity.neighbor
+	case 6: // table_entity.neighbor
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
 		msg := new(Neighbor)
 		err := b.DecodeMessage(msg)
-		m.TableEntity = &TableUpdate_Neighbor{msg}
+		m.TableEntity = &TableEvent_Neighbor{msg}
 		return true, err
-	case 4: // table_entity.report
+	case 7: // table_entity.report
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
 		msg := new(Report)
 		err := b.DecodeMessage(msg)
-		m.TableEntity = &TableUpdate_Report{msg}
+		m.TableEntity = &TableEvent_Report{msg}
 		return true, err
-	case 5: // table_entity.delist_requests
+	case 8: // table_entity.report_confirmation
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ReportConfirmation)
+		err := b.DecodeMessage(msg)
+		m.TableEntity = &TableEvent_ReportConfirmation{msg}
+		return true, err
+	case 9: // table_entity.delist_requests
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
 		msg := new(DelistRequest)
 		err := b.DecodeMessage(msg)
-		m.TableEntity = &TableUpdate_DelistRequests{msg}
+		m.TableEntity = &TableEvent_DelistRequests{msg}
 		return true, err
-	case 6: // table_entity.delist_acceptance
+	case 10: // table_entity.delist_acceptance
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
 		msg := new(DelistAcceptance)
 		err := b.DecodeMessage(msg)
-		m.TableEntity = &TableUpdate_DelistAcceptance{msg}
+		m.TableEntity = &TableEvent_DelistAcceptance{msg}
 		return true, err
 	default:
 		return false, nil
 	}
 }
 
-func _TableUpdate_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*TableUpdate)
+func _TableEvent_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*TableEvent)
 	// table_entity
 	switch x := m.TableEntity.(type) {
-	case *TableUpdate_Node:
+	case *TableEvent_Node:
 		s := proto.Size(x.Node)
-		n += proto.SizeVarint(2<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *TableUpdate_Neighbor:
-		s := proto.Size(x.Neighbor)
-		n += proto.SizeVarint(3<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *TableUpdate_Report:
-		s := proto.Size(x.Report)
-		n += proto.SizeVarint(4<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *TableUpdate_DelistRequests:
-		s := proto.Size(x.DelistRequests)
 		n += proto.SizeVarint(5<<3 | proto.WireBytes)
 		n += proto.SizeVarint(uint64(s))
 		n += s
-	case *TableUpdate_DelistAcceptance:
-		s := proto.Size(x.DelistAcceptance)
+	case *TableEvent_Neighbor:
+		s := proto.Size(x.Neighbor)
 		n += proto.SizeVarint(6<<3 | proto.WireBytes)
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *TableEvent_Report:
+		s := proto.Size(x.Report)
+		n += proto.SizeVarint(7<<3 | proto.WireBytes)
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *TableEvent_ReportConfirmation:
+		s := proto.Size(x.ReportConfirmation)
+		n += proto.SizeVarint(8<<3 | proto.WireBytes)
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *TableEvent_DelistRequests:
+		s := proto.Size(x.DelistRequests)
+		n += proto.SizeVarint(9<<3 | proto.WireBytes)
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *TableEvent_DelistAcceptance:
+		s := proto.Size(x.DelistAcceptance)
+		n += proto.SizeVarint(10<<3 | proto.WireBytes)
 		n += proto.SizeVarint(uint64(s))
 		n += s
 	case nil:
@@ -417,19 +552,25 @@ func _TableUpdate_OneofSizer(msg proto.Message) (n int) {
 
 func init() {
 	proto.RegisterType((*GetNodeRequest)(nil), "abusemesh.GetNodeRequest")
+	proto.RegisterType((*OfferSignatureRequest)(nil), "abusemesh.OfferSignatureRequest")
 	proto.RegisterType((*GetNodeTableRequest)(nil), "abusemesh.GetNodeTableRequest")
 	proto.RegisterType((*GetNeighborTableRequest)(nil), "abusemesh.GetNeighborTableRequest")
 	proto.RegisterType((*GetReportTableRequest)(nil), "abusemesh.GetReportTableRequest")
+	proto.RegisterType((*GetReportConfirmationTableRequest)(nil), "abusemesh.GetReportConfirmationTableRequest")
 	proto.RegisterType((*GetDelistRequestTableRequest)(nil), "abusemesh.GetDelistRequestTableRequest")
 	proto.RegisterType((*GetDelistAcceptanceTableRequest)(nil), "abusemesh.GetDelistAcceptanceTableRequest")
-	proto.RegisterType((*TableUpdateStreamRequest)(nil), "abusemesh.TableUpdateStreamRequest")
+	proto.RegisterType((*TableEventStreamRequest)(nil), "abusemesh.TableEventStreamRequest")
+	proto.RegisterType((*GetHistoricTableEventsRequest)(nil), "abusemesh.GetHistoricTableEventsRequest")
 	proto.RegisterType((*GetNodeTableResponse)(nil), "abusemesh.GetNodeTableResponse")
+	proto.RegisterType((*OfferSignatureResponse)(nil), "abusemesh.OfferSignatureResponse")
 	proto.RegisterType((*GetNeighborTableResponse)(nil), "abusemesh.GetNeighborTableResponse")
 	proto.RegisterType((*GetReportTableResponse)(nil), "abusemesh.GetReportTableResponse")
+	proto.RegisterType((*GetReportConfirmationTableResponse)(nil), "abusemesh.GetReportConfirmationTableResponse")
 	proto.RegisterType((*GetDelistRequestTableResponse)(nil), "abusemesh.GetDelistRequestTableResponse")
 	proto.RegisterType((*GetDelistAcceptanceTableResponse)(nil), "abusemesh.GetDelistAcceptanceTableResponse")
-	proto.RegisterType((*TableUpdate)(nil), "abusemesh.TableUpdate")
-	proto.RegisterEnum("abusemesh.TableUpdateType", TableUpdateType_name, TableUpdateType_value)
+	proto.RegisterType((*GetHistoricTableEventsResponse)(nil), "abusemesh.GetHistoricTableEventsResponse")
+	proto.RegisterType((*TableEvent)(nil), "abusemesh.TableEvent")
+	proto.RegisterEnum("abusemesh.TableEventType", TableEventType_name, TableEventType_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -445,18 +586,25 @@ const _ = grpc.SupportPackageIsVersion4
 type AbuseMeshClient interface {
 	// Returns the Node data of the current node
 	GetNode(ctx context.Context, in *GetNodeRequest, opts ...grpc.CallOption) (*Node, error)
+	// With this call a client offers a signature of the identity to the server
+	// This allows the server to increase its credibility
+	OfferSignature(ctx context.Context, in *OfferSignatureRequest, opts ...grpc.CallOption) (*OfferSignatureResponse, error)
 	// Returns the contents of the node table
 	GetNodeTable(ctx context.Context, in *GetNodeTableRequest, opts ...grpc.CallOption) (*GetNodeTableResponse, error)
 	// Returns the contents of the neighbor table of the node
 	GetNeighborTable(ctx context.Context, in *GetNeighborTableRequest, opts ...grpc.CallOption) (*GetNeighborTableResponse, error)
 	// Returns the contents of the report table of the node
 	GetReportTable(ctx context.Context, in *GetReportTableRequest, opts ...grpc.CallOption) (*GetReportTableResponse, error)
+	// Returns the contents of the report confirmation table of the node
+	GetReportConfirmationTable(ctx context.Context, in *GetReportConfirmationTableRequest, opts ...grpc.CallOption) (*GetReportConfirmationTableResponse, error)
 	// Returns the contents of the report delist requests table of the node
 	GetDelistRequestTable(ctx context.Context, in *GetDelistRequestTableRequest, opts ...grpc.CallOption) (*GetDelistRequestTableResponse, error)
 	// Returns the contents of the report delist acceptance table of the node
 	GetDelistAcceptanceTable(ctx context.Context, in *GetDelistAcceptanceTableRequest, opts ...grpc.CallOption) (*GetDelistAcceptanceTableResponse, error)
-	// Opens a stream on which all updates to the tables of a node are published
-	TableUpdateStream(ctx context.Context, in *TableUpdateStreamRequest, opts ...grpc.CallOption) (AbuseMesh_TableUpdateStreamClient, error)
+	// Returns all historic table events leading up to this point
+	GetHistoricTableEvents(ctx context.Context, in *GetHistoricTableEventsRequest, opts ...grpc.CallOption) (*GetHistoricTableEventsResponse, error)
+	// Opens a stream on which all table events of a node are published
+	TableEventStream(ctx context.Context, in *TableEventStreamRequest, opts ...grpc.CallOption) (AbuseMesh_TableEventStreamClient, error)
 }
 
 type abuseMeshClient struct {
@@ -470,6 +618,15 @@ func NewAbuseMeshClient(cc *grpc.ClientConn) AbuseMeshClient {
 func (c *abuseMeshClient) GetNode(ctx context.Context, in *GetNodeRequest, opts ...grpc.CallOption) (*Node, error) {
 	out := new(Node)
 	err := grpc.Invoke(ctx, "/abusemesh.AbuseMesh/GetNode", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *abuseMeshClient) OfferSignature(ctx context.Context, in *OfferSignatureRequest, opts ...grpc.CallOption) (*OfferSignatureResponse, error) {
+	out := new(OfferSignatureResponse)
+	err := grpc.Invoke(ctx, "/abusemesh.AbuseMesh/OfferSignature", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -503,6 +660,15 @@ func (c *abuseMeshClient) GetReportTable(ctx context.Context, in *GetReportTable
 	return out, nil
 }
 
+func (c *abuseMeshClient) GetReportConfirmationTable(ctx context.Context, in *GetReportConfirmationTableRequest, opts ...grpc.CallOption) (*GetReportConfirmationTableResponse, error) {
+	out := new(GetReportConfirmationTableResponse)
+	err := grpc.Invoke(ctx, "/abusemesh.AbuseMesh/GetReportConfirmationTable", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *abuseMeshClient) GetDelistRequestTable(ctx context.Context, in *GetDelistRequestTableRequest, opts ...grpc.CallOption) (*GetDelistRequestTableResponse, error) {
 	out := new(GetDelistRequestTableResponse)
 	err := grpc.Invoke(ctx, "/abusemesh.AbuseMesh/GetDelistRequestTable", in, out, c.cc, opts...)
@@ -521,12 +687,21 @@ func (c *abuseMeshClient) GetDelistAcceptanceTable(ctx context.Context, in *GetD
 	return out, nil
 }
 
-func (c *abuseMeshClient) TableUpdateStream(ctx context.Context, in *TableUpdateStreamRequest, opts ...grpc.CallOption) (AbuseMesh_TableUpdateStreamClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_AbuseMesh_serviceDesc.Streams[0], c.cc, "/abusemesh.AbuseMesh/TableUpdateStream", opts...)
+func (c *abuseMeshClient) GetHistoricTableEvents(ctx context.Context, in *GetHistoricTableEventsRequest, opts ...grpc.CallOption) (*GetHistoricTableEventsResponse, error) {
+	out := new(GetHistoricTableEventsResponse)
+	err := grpc.Invoke(ctx, "/abusemesh.AbuseMesh/GetHistoricTableEvents", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &abuseMeshTableUpdateStreamClient{stream}
+	return out, nil
+}
+
+func (c *abuseMeshClient) TableEventStream(ctx context.Context, in *TableEventStreamRequest, opts ...grpc.CallOption) (AbuseMesh_TableEventStreamClient, error) {
+	stream, err := grpc.NewClientStream(ctx, &_AbuseMesh_serviceDesc.Streams[0], c.cc, "/abusemesh.AbuseMesh/TableEventStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &abuseMeshTableEventStreamClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -536,17 +711,17 @@ func (c *abuseMeshClient) TableUpdateStream(ctx context.Context, in *TableUpdate
 	return x, nil
 }
 
-type AbuseMesh_TableUpdateStreamClient interface {
-	Recv() (*TableUpdate, error)
+type AbuseMesh_TableEventStreamClient interface {
+	Recv() (*TableEvent, error)
 	grpc.ClientStream
 }
 
-type abuseMeshTableUpdateStreamClient struct {
+type abuseMeshTableEventStreamClient struct {
 	grpc.ClientStream
 }
 
-func (x *abuseMeshTableUpdateStreamClient) Recv() (*TableUpdate, error) {
-	m := new(TableUpdate)
+func (x *abuseMeshTableEventStreamClient) Recv() (*TableEvent, error) {
+	m := new(TableEvent)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -558,18 +733,25 @@ func (x *abuseMeshTableUpdateStreamClient) Recv() (*TableUpdate, error) {
 type AbuseMeshServer interface {
 	// Returns the Node data of the current node
 	GetNode(context.Context, *GetNodeRequest) (*Node, error)
+	// With this call a client offers a signature of the identity to the server
+	// This allows the server to increase its credibility
+	OfferSignature(context.Context, *OfferSignatureRequest) (*OfferSignatureResponse, error)
 	// Returns the contents of the node table
 	GetNodeTable(context.Context, *GetNodeTableRequest) (*GetNodeTableResponse, error)
 	// Returns the contents of the neighbor table of the node
 	GetNeighborTable(context.Context, *GetNeighborTableRequest) (*GetNeighborTableResponse, error)
 	// Returns the contents of the report table of the node
 	GetReportTable(context.Context, *GetReportTableRequest) (*GetReportTableResponse, error)
+	// Returns the contents of the report confirmation table of the node
+	GetReportConfirmationTable(context.Context, *GetReportConfirmationTableRequest) (*GetReportConfirmationTableResponse, error)
 	// Returns the contents of the report delist requests table of the node
 	GetDelistRequestTable(context.Context, *GetDelistRequestTableRequest) (*GetDelistRequestTableResponse, error)
 	// Returns the contents of the report delist acceptance table of the node
 	GetDelistAcceptanceTable(context.Context, *GetDelistAcceptanceTableRequest) (*GetDelistAcceptanceTableResponse, error)
-	// Opens a stream on which all updates to the tables of a node are published
-	TableUpdateStream(*TableUpdateStreamRequest, AbuseMesh_TableUpdateStreamServer) error
+	// Returns all historic table events leading up to this point
+	GetHistoricTableEvents(context.Context, *GetHistoricTableEventsRequest) (*GetHistoricTableEventsResponse, error)
+	// Opens a stream on which all table events of a node are published
+	TableEventStream(*TableEventStreamRequest, AbuseMesh_TableEventStreamServer) error
 }
 
 func RegisterAbuseMeshServer(s *grpc.Server, srv AbuseMeshServer) {
@@ -590,6 +772,24 @@ func _AbuseMesh_GetNode_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AbuseMeshServer).GetNode(ctx, req.(*GetNodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AbuseMesh_OfferSignature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OfferSignatureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AbuseMeshServer).OfferSignature(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/abusemesh.AbuseMesh/OfferSignature",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AbuseMeshServer).OfferSignature(ctx, req.(*OfferSignatureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -648,6 +848,24 @@ func _AbuseMesh_GetReportTable_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AbuseMesh_GetReportConfirmationTable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReportConfirmationTableRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AbuseMeshServer).GetReportConfirmationTable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/abusemesh.AbuseMesh/GetReportConfirmationTable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AbuseMeshServer).GetReportConfirmationTable(ctx, req.(*GetReportConfirmationTableRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AbuseMesh_GetDelistRequestTable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetDelistRequestTableRequest)
 	if err := dec(in); err != nil {
@@ -684,24 +902,42 @@ func _AbuseMesh_GetDelistAcceptanceTable_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AbuseMesh_TableUpdateStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(TableUpdateStreamRequest)
+func _AbuseMesh_GetHistoricTableEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHistoricTableEventsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AbuseMeshServer).GetHistoricTableEvents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/abusemesh.AbuseMesh/GetHistoricTableEvents",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AbuseMeshServer).GetHistoricTableEvents(ctx, req.(*GetHistoricTableEventsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AbuseMesh_TableEventStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(TableEventStreamRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(AbuseMeshServer).TableUpdateStream(m, &abuseMeshTableUpdateStreamServer{stream})
+	return srv.(AbuseMeshServer).TableEventStream(m, &abuseMeshTableEventStreamServer{stream})
 }
 
-type AbuseMesh_TableUpdateStreamServer interface {
-	Send(*TableUpdate) error
+type AbuseMesh_TableEventStreamServer interface {
+	Send(*TableEvent) error
 	grpc.ServerStream
 }
 
-type abuseMeshTableUpdateStreamServer struct {
+type abuseMeshTableEventStreamServer struct {
 	grpc.ServerStream
 }
 
-func (x *abuseMeshTableUpdateStreamServer) Send(m *TableUpdate) error {
+func (x *abuseMeshTableEventStreamServer) Send(m *TableEvent) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -712,6 +948,10 @@ var _AbuseMesh_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNode",
 			Handler:    _AbuseMesh_GetNode_Handler,
+		},
+		{
+			MethodName: "OfferSignature",
+			Handler:    _AbuseMesh_OfferSignature_Handler,
 		},
 		{
 			MethodName: "GetNodeTable",
@@ -726,6 +966,10 @@ var _AbuseMesh_serviceDesc = grpc.ServiceDesc{
 			Handler:    _AbuseMesh_GetReportTable_Handler,
 		},
 		{
+			MethodName: "GetReportConfirmationTable",
+			Handler:    _AbuseMesh_GetReportConfirmationTable_Handler,
+		},
+		{
 			MethodName: "GetDelistRequestTable",
 			Handler:    _AbuseMesh_GetDelistRequestTable_Handler,
 		},
@@ -733,11 +977,15 @@ var _AbuseMesh_serviceDesc = grpc.ServiceDesc{
 			MethodName: "GetDelistAcceptanceTable",
 			Handler:    _AbuseMesh_GetDelistAcceptanceTable_Handler,
 		},
+		{
+			MethodName: "GetHistoricTableEvents",
+			Handler:    _AbuseMesh_GetHistoricTableEvents_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "TableUpdateStream",
-			Handler:       _AbuseMesh_TableUpdateStream_Handler,
+			StreamName:    "TableEventStream",
+			Handler:       _AbuseMesh_TableEventStream_Handler,
 			ServerStreams: true,
 		},
 	},
@@ -747,45 +995,61 @@ var _AbuseMesh_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("abuse-mesh.proto", fileDescriptor1) }
 
 var fileDescriptor1 = []byte{
-	// 631 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x55, 0x4d, 0x6f, 0xda, 0x40,
-	0x10, 0xb5, 0xf3, 0x41, 0x92, 0x49, 0x44, 0xcc, 0xe6, 0x03, 0xd7, 0x6d, 0x13, 0xe2, 0x28, 0x6a,
-	0x14, 0x14, 0x54, 0xa8, 0x7a, 0xaa, 0x7a, 0x20, 0xc5, 0xc2, 0xad, 0x92, 0xb4, 0xda, 0x1a, 0xe5,
-	0xd0, 0x03, 0xb2, 0xf1, 0x2a, 0x50, 0x81, 0xed, 0xda, 0xcb, 0x81, 0xbf, 0xdd, 0x73, 0x0f, 0x15,
-	0xcb, 0xda, 0xac, 0x3f, 0xa0, 0xbd, 0x79, 0xe7, 0xbd, 0x79, 0xb3, 0x9e, 0xf1, 0x3c, 0x83, 0x62,
-	0x3b, 0xd3, 0x88, 0xdc, 0x4e, 0x48, 0x34, 0x6c, 0x04, 0xa1, 0x4f, 0x7d, 0xb4, 0xc7, 0x22, 0xf3,
-	0x80, 0x56, 0x5d, 0x82, 0xb7, 0x03, 0x7f, 0x32, 0xf1, 0xbd, 0x05, 0x47, 0x57, 0xa0, 0xdc, 0x25,
-	0xf4, 0xd1, 0x77, 0x09, 0x26, 0xbf, 0xa6, 0x24, 0xa2, 0xfa, 0x09, 0x1c, 0xf1, 0x88, 0x65, 0x3b,
-	0xe3, 0x24, 0xdc, 0x84, 0xea, 0x3c, 0x4c, 0x46, 0xcf, 0x43, 0xc7, 0x0f, 0x45, 0x08, 0x9d, 0x42,
-	0xe9, 0x79, 0xec, 0x3b, 0xf6, 0x58, 0x95, 0x6b, 0xf2, 0xf5, 0x2e, 0xe6, 0x27, 0xbd, 0x0a, 0x27,
-	0x5d, 0x42, 0x31, 0x09, 0xfc, 0x90, 0xa6, 0xb4, 0xce, 0xe0, 0x55, 0x97, 0xd0, 0x0e, 0x19, 0x8f,
-	0x22, 0xca, 0x63, 0x29, 0xfc, 0x02, 0xce, 0x13, 0xbc, 0x3d, 0x18, 0x90, 0x80, 0xda, 0xde, 0x20,
-	0x7d, 0x1d, 0x0d, 0x54, 0x76, 0xee, 0x05, 0xae, 0x4d, 0xc9, 0x77, 0x1a, 0x12, 0x7b, 0x12, 0x63,
-	0x1f, 0xe1, 0x38, 0xfd, 0x06, 0x51, 0xe0, 0x7b, 0x11, 0x41, 0x57, 0xb0, 0xed, 0xf9, 0x2e, 0x89,
-	0x54, 0xb9, 0xb6, 0x79, 0xbd, 0xdf, 0x3a, 0x6c, 0x24, 0xfd, 0x69, 0xb0, 0x06, 0x2c, 0x50, 0xfd,
-	0x01, 0xd4, 0xfc, 0x9b, 0x72, 0x89, 0x26, 0xec, 0x79, 0x1c, 0x88, 0x65, 0x8e, 0x44, 0x19, 0x8e,
-	0xe1, 0x25, 0x4b, 0x37, 0xe0, 0x34, 0xdb, 0x05, 0x2e, 0x56, 0x87, 0x9d, 0x90, 0x85, 0x63, 0xa9,
-	0x8a, 0x20, 0xb5, 0x48, 0xc0, 0x31, 0x43, 0x77, 0xe0, 0xf5, 0x8a, 0x9e, 0x71, 0xb5, 0x36, 0x1c,
-	0xba, 0x0c, 0xed, 0x87, 0x0b, 0x38, 0x56, 0x55, 0x05, 0xd5, 0x54, 0x3e, 0x2e, 0xbb, 0xe2, 0x31,
-	0xd2, 0xc7, 0x50, 0x5b, 0xdd, 0x77, 0x5e, 0xc6, 0x84, 0x0a, 0x2f, 0x63, 0x27, 0x0c, 0x5e, 0xe8,
-	0x65, 0xae, 0xd0, 0x52, 0x04, 0x2b, 0x6e, 0x26, 0xa2, 0xff, 0xde, 0x80, 0x7d, 0x61, 0x86, 0xe8,
-	0x03, 0xec, 0x4f, 0xd9, 0x53, 0x9f, 0xce, 0x02, 0xc2, 0xbe, 0xa5, 0x72, 0x4b, 0x13, 0x34, 0x05,
-	0xb2, 0x35, 0x0b, 0x08, 0x86, 0x69, 0xf2, 0x8c, 0xae, 0x60, 0x6b, 0x3e, 0x3d, 0x75, 0xa3, 0x26,
-	0x17, 0x8c, 0xd6, 0x94, 0x30, 0x83, 0x51, 0x13, 0x76, 0xe3, 0xc9, 0xa8, 0x9b, 0x8c, 0x5a, 0x34,
-	0x3e, 0x53, 0xc2, 0x09, 0x0d, 0xd5, 0xa1, 0xb4, 0x98, 0x81, 0xba, 0xc5, 0x12, 0xf2, 0x43, 0x32,
-	0x25, 0xcc, 0x29, 0xe8, 0x53, 0x7e, 0x08, 0xdb, 0x2c, 0x6b, 0xe5, 0x10, 0x4c, 0x29, 0x3b, 0x06,
-	0xf4, 0xa5, 0xa8, 0xc5, 0x25, 0x26, 0xb3, 0xae, 0xc5, 0xa6, 0x94, 0x6f, 0xf2, 0x5d, 0x19, 0x0e,
-	0xe8, 0xbc, 0x6d, 0x7d, 0xe2, 0xd1, 0x11, 0x9d, 0xdd, 0x3c, 0xc1, 0x61, 0xa6, 0x8d, 0xe8, 0x18,
-	0x14, 0xab, 0x7d, 0x77, 0x6f, 0xf4, 0x7b, 0xdf, 0x3a, 0x6d, 0xcb, 0xe8, 0x3f, 0x1a, 0x4f, 0x8a,
-	0x84, 0x4e, 0xa0, 0x92, 0x8a, 0x1a, 0x9d, 0xcf, 0x96, 0x22, 0xa3, 0x2a, 0x1c, 0xa5, 0xc2, 0x1d,
-	0xe3, 0xde, 0xb0, 0x0c, 0x65, 0xa3, 0xf5, 0x67, 0x0b, 0xf6, 0xda, 0xf3, 0xbb, 0x3d, 0x90, 0x68,
-	0x88, 0xde, 0xc3, 0x0e, 0x5f, 0x41, 0xf4, 0x42, 0xb8, 0x72, 0xda, 0x6a, 0xb4, 0xec, 0x98, 0xd0,
-	0x57, 0x38, 0x10, 0x37, 0x17, 0x9d, 0xe5, 0x73, 0x45, 0x17, 0xd0, 0xce, 0x57, 0xe2, 0xfc, 0x6b,
-	0xfd, 0x01, 0x4a, 0x76, 0x97, 0x91, 0x9e, 0x49, 0x2a, 0xb0, 0x34, 0xed, 0x72, 0x2d, 0x87, 0x8b,
-	0xf7, 0x98, 0x77, 0x0a, 0x9b, 0x8d, 0x6a, 0xe9, 0xb4, 0xbc, 0xf5, 0x69, 0x17, 0x6b, 0x18, 0x5c,
-	0xf6, 0x27, 0xb3, 0xcd, 0xfc, 0xa6, 0xa3, 0x37, 0xe9, 0xdc, 0x95, 0xfe, 0xa9, 0x5d, 0xff, 0x9b,
-	0xc8, 0x6b, 0x45, 0xcc, 0xeb, 0x0a, 0x37, 0x1e, 0xdd, 0x14, 0xa9, 0x14, 0xdb, 0xb1, 0x56, 0xff,
-	0x2f, 0x2e, 0x2f, 0x8a, 0xa1, 0x92, 0xf3, 0x6e, 0x74, 0x59, 0xbc, 0xe8, 0x29, 0x67, 0xd7, 0x4e,
-	0x8b, 0x49, 0x6f, 0x65, 0xa7, 0xc4, 0x7e, 0x67, 0xef, 0xfe, 0x06, 0x00, 0x00, 0xff, 0xff, 0x1b,
-	0x6a, 0x92, 0x9c, 0x06, 0x07, 0x00, 0x00,
+	// 881 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x56, 0x5d, 0x4f, 0xeb, 0x46,
+	0x10, 0x4d, 0xee, 0xe5, 0xe6, 0x63, 0xb8, 0x35, 0x66, 0x43, 0x88, 0xaf, 0x5b, 0x20, 0x18, 0xa1,
+	0xa6, 0xd0, 0xa0, 0x92, 0x8a, 0x3e, 0x54, 0xaa, 0xd4, 0x40, 0xac, 0x98, 0x8a, 0x8f, 0xc8, 0x24,
+	0xed, 0x43, 0x1f, 0x2c, 0x27, 0x5e, 0xc0, 0x55, 0x62, 0xbb, 0xf6, 0x06, 0x29, 0x7f, 0xad, 0xbf,
+	0xa8, 0x3f, 0xa3, 0xca, 0x7a, 0xfd, 0x6d, 0xa7, 0xbc, 0xc5, 0x33, 0x67, 0xcf, 0xd9, 0xec, 0x9c,
+	0x9d, 0x59, 0xe0, 0xf5, 0xe9, 0xd2, 0xc3, 0xdd, 0x05, 0xf6, 0x5e, 0x2f, 0x1c, 0xd7, 0x26, 0x36,
+	0xaa, 0xd3, 0xc8, 0x3a, 0x20, 0xb6, 0xa2, 0x64, 0x77, 0x66, 0x2f, 0x16, 0xb6, 0xe5, 0x63, 0x24,
+	0x1e, 0xb8, 0x21, 0x26, 0x0f, 0xb6, 0x81, 0x55, 0xfc, 0xf7, 0x12, 0x7b, 0x44, 0x7a, 0x80, 0xe6,
+	0xe3, 0xf3, 0x33, 0x76, 0x9f, 0xcc, 0x17, 0x4b, 0x27, 0x4b, 0x37, 0x48, 0xa0, 0x2b, 0xa8, 0x7b,
+	0x41, 0x4c, 0x28, 0xb7, 0xcb, 0x9d, 0xed, 0x5e, 0xeb, 0x22, 0x94, 0xb8, 0x18, 0x0d, 0x47, 0xd1,
+	0x92, 0x08, 0x29, 0x35, 0xa1, 0xc1, 0x14, 0xc6, 0xfa, 0x74, 0x1e, 0xca, 0x5c, 0x42, 0x6b, 0x1d,
+	0xc6, 0xe6, 0xcb, 0xeb, 0xd4, 0x76, 0xe3, 0x29, 0xb4, 0x0f, 0x95, 0x97, 0xb9, 0x3d, 0xd5, 0xe7,
+	0x54, 0xa5, 0xa6, 0xb2, 0x2f, 0xa9, 0x05, 0xcd, 0x21, 0x26, 0x2a, 0x76, 0x6c, 0x97, 0x24, 0xb8,
+	0x4e, 0xe0, 0x38, 0x4c, 0xdc, 0xd8, 0xd6, 0xb3, 0xe9, 0x2e, 0x74, 0x62, 0xda, 0x56, 0x02, 0x74,
+	0x08, 0xdf, 0x0c, 0x31, 0x19, 0xe0, 0xb9, 0xe9, 0x11, 0x16, 0x4b, 0xe4, 0x8f, 0xe1, 0x28, 0xcc,
+	0xf7, 0x67, 0x33, 0xec, 0x10, 0xdd, 0x9a, 0x25, 0xf7, 0xfc, 0x05, 0x5a, 0xf4, 0x5b, 0x7e, 0xc3,
+	0x16, 0x79, 0x22, 0x2e, 0xd6, 0x17, 0x41, 0xea, 0x08, 0x0e, 0x86, 0x98, 0x28, 0xa6, 0x47, 0x6c,
+	0xd7, 0x9c, 0x45, 0x28, 0x2f, 0x00, 0xfc, 0x02, 0x7b, 0xc9, 0x63, 0xf0, 0x1c, 0xdb, 0xf2, 0x30,
+	0x3a, 0x85, 0x4f, 0x96, 0x6d, 0x60, 0x4f, 0x28, 0xb7, 0x3f, 0x76, 0xb6, 0x7b, 0x3b, 0xb1, 0x13,
+	0xa5, 0x55, 0xf1, 0xb3, 0x92, 0x00, 0xfb, 0xe9, 0xaa, 0xf8, 0x04, 0xd2, 0x3d, 0x08, 0xd9, 0x83,
+	0x64, 0xe4, 0x97, 0x50, 0xb7, 0x58, 0x22, 0x10, 0x68, 0xc4, 0x05, 0x58, 0x4e, 0x8d, 0x50, 0x92,
+	0x0c, 0xfb, 0xe9, 0x43, 0x66, 0x64, 0xe7, 0x50, 0x75, 0x69, 0x38, 0xa0, 0xda, 0x8d, 0x51, 0xf9,
+	0x0b, 0xd4, 0x00, 0x21, 0xbd, 0x81, 0xb4, 0xa9, 0x24, 0x8c, 0x72, 0x04, 0x7b, 0xfe, 0x02, 0x6d,
+	0x16, 0xc3, 0x04, 0xfc, 0x07, 0x19, 0xfe, 0x38, 0x93, 0xda, 0x70, 0x33, 0x31, 0x4f, 0x9a, 0xd2,
+	0x3a, 0xe4, 0x55, 0x99, 0x49, 0xf6, 0x61, 0xc7, 0xa0, 0x59, 0xcd, 0xf5, 0xd3, 0x81, 0x9a, 0x10,
+	0x53, 0x4b, 0xac, 0x57, 0x39, 0x23, 0xfe, 0xe9, 0x49, 0x73, 0x68, 0x17, 0x3b, 0x85, 0xc9, 0x28,
+	0xb0, 0xcb, 0x64, 0xf4, 0x10, 0xc1, 0x84, 0xbe, 0xce, 0x08, 0x45, 0x24, 0x2a, 0x6f, 0xa4, 0x22,
+	0xd2, 0x23, 0x1c, 0x16, 0x39, 0x8b, 0x69, 0x75, 0xa1, 0x82, 0x69, 0x84, 0x09, 0x34, 0x63, 0x02,
+	0x11, 0x5e, 0x65, 0x20, 0xe9, 0xdf, 0x2d, 0x80, 0x28, 0x8c, 0xce, 0xa0, 0x46, 0x13, 0x9a, 0x69,
+	0xb0, 0x5b, 0x1d, 0xf7, 0xe0, 0x64, 0x72, 0x3b, 0x50, 0xab, 0x14, 0x70, 0x6b, 0xa0, 0x9f, 0x80,
+	0x73, 0x5c, 0xfc, 0x66, 0xda, 0x4b, 0x4f, 0xa3, 0x31, 0xe1, 0x43, 0xfe, 0x8a, 0xaf, 0x02, 0x98,
+	0xaf, 0xf1, 0x2b, 0xec, 0xf8, 0x1a, 0x51, 0x03, 0xf9, 0xb8, 0xb9, 0x81, 0x70, 0x14, 0x1f, 0x7e,
+	0xa3, 0x9f, 0x61, 0x7b, 0xe9, 0x18, 0x3a, 0xc1, 0x1a, 0x59, 0x39, 0x58, 0xd8, 0x6a, 0x97, 0x3b,
+	0x5c, 0xef, 0x4b, 0xee, 0x1f, 0x1d, 0xaf, 0x1c, 0xac, 0x82, 0x8f, 0x5e, 0xff, 0x46, 0xa7, 0xb0,
+	0xb5, 0xbe, 0x44, 0xc2, 0xa7, 0xcc, 0x5e, 0xd7, 0x37, 0x4c, 0x29, 0xa9, 0x34, 0x8d, 0x2e, 0xa1,
+	0x16, 0x5c, 0x03, 0xa1, 0x42, 0xa1, 0x79, 0x77, 0x45, 0x29, 0xa9, 0x21, 0x0c, 0x9d, 0x43, 0xc5,
+	0x37, 0xa1, 0x50, 0xa5, 0x0b, 0xb2, 0x37, 0x42, 0x29, 0xa9, 0x0c, 0x82, 0x46, 0xd0, 0xc8, 0x31,
+	0xbb, 0x50, 0xa3, 0x2b, 0x37, 0x7b, 0x5d, 0x29, 0xa9, 0x28, 0xeb, 0x76, 0x74, 0x93, 0xf5, 0x72,
+	0x9d, 0xb2, 0x15, 0x7a, 0x59, 0x29, 0xa5, 0xdd, 0x8c, 0x7e, 0xcb, 0x73, 0x2a, 0x50, 0x9a, 0x4d,
+	0x4e, 0x55, 0x4a, 0x59, 0xaf, 0x5e, 0x73, 0xf0, 0x99, 0xac, 0xeb, 0xa0, 0x61, 0x8b, 0x98, 0x64,
+	0x75, 0xf6, 0x3b, 0x70, 0xc9, 0xba, 0xa0, 0x3d, 0xe0, 0xc7, 0xfd, 0xeb, 0x3b, 0x59, 0x9b, 0x8c,
+	0x06, 0xfd, 0xb1, 0xac, 0x3d, 0xc8, 0x7f, 0xf0, 0x25, 0xd4, 0x84, 0xdd, 0x44, 0x54, 0x1e, 0xdc,
+	0x8e, 0xf9, 0x32, 0x6a, 0x41, 0x23, 0x11, 0x1e, 0xc8, 0x77, 0xf2, 0x58, 0xe6, 0x3f, 0xf4, 0xfe,
+	0xa9, 0x42, 0xbd, 0xbf, 0xde, 0xda, 0x3d, 0xf6, 0x5e, 0xd1, 0x15, 0x54, 0x59, 0x6b, 0x45, 0x71,
+	0x47, 0x24, 0xe7, 0x9a, 0x98, 0xae, 0x3b, 0x9a, 0x00, 0x97, 0x6c, 0xa9, 0xa8, 0x1d, 0x83, 0xe4,
+	0xce, 0x40, 0xf1, 0x78, 0x03, 0x82, 0xdd, 0xc6, 0x47, 0xf8, 0x1c, 0x6f, 0xf4, 0xe8, 0x30, 0xbb,
+	0xa5, 0xf8, 0x50, 0x11, 0x8f, 0x0a, 0xf3, 0x8c, 0xf0, 0x4f, 0xe0, 0xd3, 0x0d, 0x1e, 0x49, 0xa9,
+	0x45, 0x39, 0x63, 0x54, 0x3c, 0xd9, 0x88, 0x61, 0xe4, 0x13, 0x3a, 0xff, 0x63, 0xed, 0x3e, 0x71,
+	0x08, 0xb9, 0xe3, 0x36, 0x71, 0x08, 0x05, 0xb3, 0x62, 0x05, 0x62, 0x71, 0xfb, 0x47, 0xdf, 0xe7,
+	0x11, 0x14, 0x0d, 0x6e, 0xb1, 0xfb, 0x4e, 0x34, 0x93, 0xfe, 0x8b, 0xbe, 0x12, 0xb2, 0x13, 0x00,
+	0x7d, 0x9b, 0xe4, 0x29, 0x7c, 0x09, 0x88, 0x9d, 0xff, 0x07, 0x32, 0x2d, 0x8f, 0xce, 0xde, 0xdc,
+	0x49, 0x80, 0xce, 0xf2, 0x58, 0xf2, 0x1f, 0x16, 0xe2, 0xf9, 0xbb, 0xb0, 0x4c, 0x74, 0x41, 0x27,
+	0x74, 0xce, 0x40, 0x40, 0xa9, 0x8d, 0x17, 0xbf, 0x46, 0xc4, 0xef, 0xde, 0x81, 0x0c, 0xfd, 0xcc,
+	0xa7, 0x1f, 0x3d, 0x09, 0xfb, 0x15, 0xbc, 0x88, 0xc4, 0xfc, 0x29, 0xf4, 0x43, 0x79, 0x5a, 0xa1,
+	0x2f, 0xcf, 0x1f, 0xff, 0x0b, 0x00, 0x00, 0xff, 0xff, 0xd7, 0xf8, 0xd0, 0x5e, 0xb1, 0x0a, 0x00,
+	0x00,
 }
