@@ -26,22 +26,10 @@ It has these top-level messages:
 	DelistAcceptanceMethod
 	GetNodeRequest
 	OfferSignatureRequest
-	GetNodeTableRequest
-	GetNeighborTableRequest
-	GetReportTableRequest
-	GetReportConfirmationTableRequest
-	GetDelistRequestTableRequest
-	GetDelistAcceptanceTableRequest
+	NegotiateNeighborshipRequest
 	TableEventStreamRequest
-	GetHistoricTableEventsRequest
-	GetNodeTableResponse
 	OfferSignatureResponse
-	GetNeighborTableResponse
-	GetReportTableResponse
-	GetReportConfirmationTableResponse
-	GetDelistRequestTableResponse
-	GetDelistAcceptanceTableResponse
-	GetHistoricTableEventsResponse
+	NegotiateNeighborshipResponse
 	TableEvent
 */
 package abusemesh
